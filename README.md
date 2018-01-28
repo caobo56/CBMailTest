@@ -7,10 +7,9 @@ iOS系统框架提供的两种发送Email的方法：openURL 和 MFMailComposeVi
 
 Type 1：openURL
 
-       openURL调用系统Mail客户端 是我们在iOS3之前实现发邮件功能的主要方法。效果是，从A应用切换到Mail，实际是在Mail中编辑发送邮件，这种方法是很不友好的。
+openURL调用系统Mail客户端 是我们在iOS3之前实现发邮件功能的主要方法。效果是，从A应用切换到Mail，实际是在Mail中编辑发送邮件，这种方法是很不友好的。
 
-       下面是详细代码：
-
+下面是详细代码：
 
 ```
 -(void)launchMailApp     
