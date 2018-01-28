@@ -32,3 +32,71 @@ openURL调用系统Mail客户端 是我们在iOS3之前实现发邮件功能的�
     [[UIApplication sharedApplication] openURL: [NSURL URLWithString:email]];       
 }   
 ```
+
+Type 2：MFMailComposeViewController
+
+MFMailComposeViewController是iOS3之后新增的，源于MessageUI.framework。显而易见，我们通过MFMailComposeViewController这个控制器，可以在我们自己的APP中展现一个邮件编辑页面，这样发送邮件就不需要离开当前的APP了。前提是设备中的Mail要添加了账户，或者iCloud设置了邮件账户。所以需要MFMailComposeViewController提供的canSendMail判断是否已绑定账户。
+
+MFMailComposeViewController使用前的准备：
+
+       1、项目中引入MessageUI.framework
+
+       2、导入MFMailComposeViewController.h
+
+       3、遵循MFMailComposeViewControllerDelegate，并实现代理方法来处理发送
+
+
+```
+- (IBAction)sendMailAction:(id)sender {
+    // 1.初始化编写邮件的控制器
+    MFMailComposeViewController *mailViewController = [[MFMailComposeViewController alloc] init];
+    if (!mailViewController) {
+        // 在设备还没有添加邮件账户的时候mailViewController为空，
+        // 下面的present view controller会导致程序崩溃，这里要作出判断
+        if (_mailBlock) {
+            _mailBlock(@"设备还没有添加邮件账户");
+        }
+        return;
+    }
+    
+    mailViewController.mailComposeDelegate = self;
+    
+    // 2.设置邮件主题
+    if (_mailTitle) {
+        [mailViewController setSubject:_mailTitle];
+    }
+    
+    if (_mailText) {
+        // 3.设置邮件主体内容
+        [mailViewController setMessageBody:_mailText isHTML:NO];
+    }
+    
+    // 5.呼出发送视图
+    [self presentViewController:mailViewController animated:YES completion:nil];
+}
+
+
+
+#pragma mark - 实现 MFMailComposeViewControllerDelegate
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    if (result == MFMailComposeResultFailed) {
+        if (_mailBlock) {
+            _mailBlock(NSLocalizedString(@"SendEmailFail", @""));
+        }
+    } else if (result == MFMailComposeResultSent) {
+        if (_mailBlock) {
+            _mailBlock(NSLocalizedString(@"SendEmailSuccess", @""));
+        }
+    }
+    //关闭邮件发送窗口
+    
+    [controller dismissViewControllerAnimated:YES completion:^{
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }];
+    
+}
+
+
+```
+
