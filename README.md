@@ -12,6 +12,7 @@ Type 1：openURL
        下面是详细代码：
 
 
+```
 -(void)launchMailApp     
 {       
     NSMutableString *mailUrl = [[[NSMutableString alloc]init]autorelease];     
@@ -31,3 +32,4 @@ Type 1：openURL
     NSString* email = [mailUrl stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];       
     [[UIApplication sharedApplication] openURL: [NSURL URLWithString:email]];       
 }   
+```
