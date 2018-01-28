@@ -52,6 +52,11 @@
     [self sendMailAction:nil];
 }
 
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
 - (IBAction)sendMailAction:(id)sender {
     // 1.初始化编写邮件的控制器
     MFMailComposeViewController *mailViewController = [[MFMailComposeViewController alloc] init];
@@ -80,10 +85,7 @@
     [self presentViewController:mailViewController animated:YES completion:nil];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
+
 
 #pragma mark - 实现 MFMailComposeViewControllerDelegate
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
