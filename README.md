@@ -10,3 +10,24 @@ Type 1：openURL
        openURL调用系统Mail客户端 是我们在iOS3之前实现发邮件功能的主要方法。效果是，从A应用切换到Mail，实际是在Mail中编辑发送邮件，这种方法是很不友好的。
 
        下面是详细代码：
+
+
+-(void)launchMailApp     
+{       
+    NSMutableString *mailUrl = [[[NSMutableString alloc]init]autorelease];     
+    //添加收件人     
+    NSArray *toRecipients = [NSArray arrayWithObject: @"first@example.com"];     
+    [mailUrl appendFormat:@"mailto:%@", [toRecipients componentsJoinedByString:@","]];     
+    //添加抄送     
+    NSArray *ccRecipients = [NSArray arrayWithObjects:@"second@example.com", @"third@example.com", nil];       
+    [mailUrl appendFormat:@"?cc=%@", [ccRecipients componentsJoinedByString:@","]];     
+    //添加密送     
+    NSArray *bccRecipients = [NSArray arrayWithObjects:@"fourth@example.com", nil];       
+    [mailUrl appendFormat:@"&bcc=%@", [bccRecipients componentsJoinedByString:@","]];     
+    //添加主题     
+    [mailUrl appendString:@"&subject=my email"];     
+    //添加邮件内容     
+    [mailUrl appendString:@"&body=<b>email</b> body!"];     
+    NSString* email = [mailUrl stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];       
+    [[UIApplication sharedApplication] openURL: [NSURL URLWithString:email]];       
+}   
