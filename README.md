@@ -42,10 +42,10 @@ MFMailComposeViewController使用前的准备：
        1、项目中引入MessageUI.framework
 
        2、导入MFMailComposeViewController.h
-
+       
        3、遵循MFMailComposeViewControllerDelegate，并实现代理方法来处理发送
 
-
+下面是详细代码：
 ```
 - (IBAction)sendMailAction:(id)sender {
     // 1.初始化编写邮件的控制器
